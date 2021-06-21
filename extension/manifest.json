@@ -1,0 +1,36 @@
+{
+  "description": "YoutubeMusic Rich Presence For discord",
+  "manifest_version": 2,
+  "name": "YTMusicRichPresence",
+  "version": "1.0",
+  "homepage_url": "https://github.com/KK964/Discord-YT-Music-Rich-Presence",
+  "icons": {
+    "32": "icons/youtube_music-32.png",
+    "48": "icons/youtube_music-48.png",
+    "96": "icons/youtube_music-96.png"
+  },
+
+  "permissions": [
+    "https://music.youtube.com/*",
+    "http://localhost:8720/*",
+    "tabs",
+    "activeTab",
+    "storage"
+  ],
+
+
+
+  "content_scripts": [
+    {
+      "matches": ["*://music.youtube.com/*"],
+      "js": ["index.js"]
+    }
+  ],
+
+  "background": {
+    "scripts": ["jquery.js", "background.js"],
+    "persistent": true
+  },
+
+  "web_accessible_resources": ["scripts/*"]
+}

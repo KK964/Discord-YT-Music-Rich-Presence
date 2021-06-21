@@ -1,0 +1,32 @@
+{
+  "name": "yt-richpresence",
+  "version": "1.0.0",
+  "description": "Show the music you are listening to like Spotify in discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KK964/Discord-YT-Music-Rich-Presence.git"
+  },
+  "keywords": [
+    "discord",
+    "youtube",
+    "music",
+    "rich",
+    "presence"
+  ],
+  "author": "KK964",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KK964/Discord-YT-Music-Rich-Presence/issues"
+  },
+  "homepage": "https://github.com/KK964/Discord-YT-Music-Rich-Presence#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "discord-rich-presence": "^0.0.8",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  }
+}
