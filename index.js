@@ -22,9 +22,10 @@ var cache;
 app.post('/update', (req, res) => {
   const body = req.body;
   if (body?.song && body?.artist && body?.['time-left']) {
+    body.artist = body.artist.split(' • ')?.[0] ?? body.artist;
     update(
-      `${body.paused ? 'Paused on' : 'Listening to'} "${body.song}"`,
-      `by ${body.artist}`,
+      body.song + (body.song.length < 2 ? '.' : ''),
+      body.artist + (body.artist.length < 2 ? '.' : ''),
       body.paused ? null : body['time-left'],
       body.paused ? 'paused' : 'playing',
       body.paused ? 'Paused' : 'Playing'
