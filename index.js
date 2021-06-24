@@ -43,6 +43,7 @@ function update(details, state, timeLeft, smallImageKey, smallImageText, instanc
   var obj = {
     largeImageKey: 'logo',
     instance,
+    buttons: [],
   };
   if (details) {
     obj.details = details;
@@ -61,6 +62,10 @@ function update(details, state, timeLeft, smallImageKey, smallImageText, instanc
     obj.startTimestamp = Date.now();
     obj.endTimestamp = Date.now() + timeLeft;
   }
+  obj.buttons.push({
+    label: 'Extension',
+    url: 'https://github.com/KK964/Discord-YT-Music-Rich-Presence',
+  });
 
   cache = obj;
   if (!connected) return;
