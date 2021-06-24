@@ -1,4 +1,5 @@
 require('dotenv').config();
+const RPC = require('discord-rpc');
 const Express = require('express');
 const app = Express();
 const cors = require('cors');
@@ -12,7 +13,10 @@ app.use(
   })
 );
 
-const client = require('discord-rich-presence')(process.env.APPLICATION_ID);
+const rpc = new RPC.Client({ transport: typeof window !== 'undefined' ? 'websocket' : 'ipc' });
+
+var connected = false;
+
 
 app.post('/update', (req, res) => {
   const body = req.body;
@@ -55,32 +59,45 @@ function update(details, state, timeLeft, smallImageKey, smallImageText, instanc
     obj.startTimestamp = Date.now();
     obj.endTimestamp = Date.now() + timeLeft;
   }
-  client.updatePresence(obj);
+  if (!connected) return;
+  rpc.setActivity(obj).catch(logErrors);
+}
+
+function logErrors(err) {
+  console.log(err);
+}
+
+function login() {
+  if (!connected)
+    rpc
+      .login({ clientId: process.env.APPLICATION_ID })
+      .catch(logErrors)
+      .then(() => {
+      });
 }
 
 function deleteStatus() {
-  client.updatePresence();
+  if (connected)
+    rpc
+      .destroy()
+      .catch(logErrors)
+      .then(() => (connected = false));
 }
 
-client.on('connected', () => {
+rpc.on('ready', () => {
+  console.info('RPC is ready');
+});
+
+rpc.on('connected', () => {
   console.info('Connected to discord rpc');
+  connected = true;
 });
 
-client.on('error', (err) => {
-  console.warn(err);
+rpc.on('disconnected', () => {
+  console.info('Disconnected from discord rpc');
 });
 
-client.on('joinRequest', (user) => {
-  console.info(`${user} has requested to join`);
-});
-
-client.on('join', (secret) => {
-  console.info(`New join, secret is: ${secret}`);
-});
-
-client.on('spectate', (secret) => {
-  console.info(`New spectator, secret is: ${secret}`);
-});
+login();
 
 app.listen(8720, () => {
   console.info(`Listening on http://localhost:8720`);
