@@ -17,6 +17,7 @@ const rpc = new RPC.Client({ transport: typeof window !== 'undefined' ? 'websock
 
 var connected = false;
 
+var cache;
 
 app.post('/update', (req, res) => {
   const body = req.body;
@@ -59,6 +60,8 @@ function update(details, state, timeLeft, smallImageKey, smallImageText, instanc
     obj.startTimestamp = Date.now();
     obj.endTimestamp = Date.now() + timeLeft;
   }
+
+  cache = obj;
   if (!connected) return;
   rpc.setActivity(obj).catch(logErrors);
 }
@@ -73,6 +76,10 @@ function login() {
       .login({ clientId: process.env.APPLICATION_ID })
       .catch(logErrors)
       .then(() => {
+        if (cache) {
+          rpc.setActivity(cache).catch(logErrors);
+          cache = null;
+        }
       });
 }
 
