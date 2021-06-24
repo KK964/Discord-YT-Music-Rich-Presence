@@ -22,9 +22,8 @@ setInterval(() => {
 }, 10000);
 
 b.runtime.onMessage.addListener(async (req, sender, response) => {
-  if (req.type == 'song') updatePresence(req.paused, req.song, req.artist, req.time);
+  if (req.type == 'song') updatePresence(req.paused, req.song, req.artist, req.time, req.url);
 });
-
 
 function deletePresence() {
   var settings = {
@@ -37,12 +36,13 @@ function deletePresence() {
   $.ajax(settings);
 }
 
-function updatePresence(paused, song, artist, time) {
+function updatePresence(paused, song, artist, time, url) {
   const data = {
     paused: paused,
     song: song,
     artist: artist,
     'time-left': time,
+    url: url,
   };
   var settings = {
     async: true,

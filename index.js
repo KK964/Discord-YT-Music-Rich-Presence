@@ -28,7 +28,8 @@ app.post('/update', (req, res) => {
       body.artist + (body.artist.length < 2 ? '.' : ''),
       body.paused ? null : body['time-left'],
       body.paused ? 'paused' : 'playing',
-      body.paused ? 'Paused' : 'Playing'
+      body.paused ? 'Paused' : 'Playing',
+      body.url
     );
     res.send();
     return;
@@ -39,7 +40,7 @@ app.delete('/', (req, res) => {
   deleteStatus();
 });
 
-function update(details, state, timeLeft, smallImageKey, smallImageText, instance = true) {
+function update(details, state, timeLeft, smallImageKey, smallImageText, url, instance = true) {
   var obj = {
     largeImageKey: 'logo',
     instance,
@@ -61,6 +62,12 @@ function update(details, state, timeLeft, smallImageKey, smallImageText, instanc
   if (timeLeft) {
     obj.startTimestamp = Date.now();
     obj.endTimestamp = Date.now() + timeLeft;
+  }
+  if (url) {
+    obj.buttons.push({
+      label: 'Listen',
+      url: url,
+    });
   }
   obj.buttons.push({
     label: 'Extension',

@@ -24,12 +24,15 @@ function updateSong() {
   var totalTimeMS = getTime(times[1].split(':'));
   var timeLeft = totalTimeMS - currentTimeMs;
 
+  var url = window.location.href;
+
   b.runtime.sendMessage({
     type: 'song',
     paused: paused,
     song: name,
     artist: artist,
     time: timeLeft,
+    url: url,
   });
 }
 
